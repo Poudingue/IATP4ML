@@ -1,6 +1,7 @@
+from sklearn.neural_network import MLPClassifier
+from sklearn.model_selection import train_test_split
+import random
 import pandas as pd
-from matplotlib import pyplot as plt
-from numpy.random import random
 
 data = pd.read_csv("full_dataset.csv")
 
@@ -16,9 +17,8 @@ turn_df = data[data["turns_to_end"] == turns_before_end]
 X = turn_df[features_cols]
 Y = turn_df[pred_col]
 
-from sklearn import neighbors as nb
-nb_neighb = 25
-clf = nb.KNeighborsClassifier(n_neighbors=nb_neighb)
+Xtrain, Xtest, Ytrain, Ytest = train_test_split(X, Y, test_size=.3, random_state=random.seed())
 
-clf.fit(X, Y)
-print(clf.predict(X[0:5]))
+clf=MLPClassifier(solver="lbfgs", alpha=1e-5, hidden_layer_sizes=(5,5), random_state=1)
+clf.fit(Xtrain,Ytrain)
+print(clf.score(Xtest, Ytest))

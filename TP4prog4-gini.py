@@ -1,3 +1,5 @@
+from sklearn import tree
+# -*- coding: utf-8 -*-
 import pandas as pd
 from matplotlib import pyplot as plt
 from numpy.random import random
@@ -16,9 +18,9 @@ turn_df = data[data["turns_to_end"] == turns_before_end]
 X = turn_df[features_cols]
 Y = turn_df[pred_col]
 
-from sklearn import neighbors as nb
-nb_neighb = 25
-clf = nb.KNeighborsClassifier(n_neighbors=nb_neighb)
-
-clf.fit(X, Y)
-print(clf.predict(X[0:5]))
+for i in range(3,10):
+    clf=tree.DecisionTreeClassifier(criterion="gini",max_leaf_nodes=i)
+    clf=clf.fit(X,Y)
+    print(clf.predict(X[0:10]))
+    print(clf.score(X,Y))
+    tree.export_graphviz(clf, out_file='tree-gini'+str(i)+'.dot')

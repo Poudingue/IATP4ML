@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import pandas as pd
 from matplotlib import pyplot as plt
 from numpy.random import random
@@ -16,9 +17,17 @@ turn_df = data[data["turns_to_end"] == turns_before_end]
 X = turn_df[features_cols]
 Y = turn_df[pred_col]
 
-from sklearn import neighbors as nb
-nb_neighb = 25
-clf = nb.KNeighborsClassifier(n_neighbors=nb_neighb)
+x_col="my_health"
+y_col="opponent_health"
 
-clf.fit(X, Y)
-print(clf.predict(X[0:5]))
+colors=["red","green"]
+for i in range(2):
+    indices = Y["result"]==i
+    plt.scatter(X[indices][x_col] + 0.5*(random(X[indices].shape[0])-0.5),
+                X[indices][y_col] + 0.5*(random(X[indices].shape[0])-0.5),
+                color=colors[i],label=i,s=2)
+plt.legend()
+plt.xlabel(x_col)
+plt.ylabel(y_col)
+plt.title("Hearthstone data: health")
+plt.show()
